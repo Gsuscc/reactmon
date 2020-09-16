@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 class Pokemons extends Component {
-  state = {
-    pokemons: [],
-  };
+  constructor(props) {
+    super();
+    this.state = {
+      pokemons: [],
+      img: [],
+    };
+  }
 
   getPokemons() {
     axios.get("https://pokeapi.co/api/v2/pokemon").then((response) => {
@@ -13,20 +17,37 @@ class Pokemons extends Component {
       this.setState({ pokemons });
     });
   }
+  getPokemonImages() {
+    this.state.pokemons.forEach((pokemon) => this.getPokemonInfo(pokemon.url));
+  }
 
   componentDidMount() {
     this.getPokemons();
+    this.getPokemonImages();
+  }
+
+  getPokemonInfo(url) {
+    axios.get(url).then((response) => {
+      let name = response.data.name;
+      let imgUrl = response.data.sprites.fornt_default;
+      let imgToAdd = { name: imgUrl };
+      this.setState({ img: [...this.state.img, imgToAdd] });
+    });
   }
 
   render() {
     return (
       <div>
         {this.state.pokemons.map((pokemon) => (
-          <Router>
-            <li>
-              <Link to={pokemon.url}>{pokemon.name}</Link>
-            </li>
-          </Router>
+          <div className="card">
+            <p className="name">{pokemon.name}</p>
+            <img src={this.state.img[pokemon.name]} alt="img"></img>
+            <Router>
+              <li>
+                <Link to={pokemon.url}></Link>
+              </li>
+            </Router>
+          </div>
         ))}
       </div>
     );

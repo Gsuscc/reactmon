@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Pokemons from "./components/Pokemons";
 import Type from "./components/Type";
+import DetailPage from "./components/DetailPage";
+import axios from "axios";
 
 class App extends Component {
   state = {
@@ -10,14 +12,39 @@ class App extends Component {
       { id: 1, link: "/pokemons", buttonName: "Pokecodex" },
       { id: 2, link: "/types", buttonName: "Types" },
     ],
-    displayPokemons: false,
+    isLoading: true,
+    pokemonsLinks: [],
+    pokemonsInfo: [],
   };
 
-  displayPokemons = () => {
-    this.setState({
-      displayPokemons: !this.state.displayPokemons,
+  getPokemons() {
+    axios
+      .get("https://pokeapi.co/api/v2/pokemon")
+      .then((response) => {
+        response.data.results.forEach((pokemon) => {
+          this.getPokemonInfo(pokemon.url);
+        });
+        return response;
+      })
+      .then((response) => {
+        console.log("getting Links");
+        const pokemonsLinks = response.data.results;
+        this.setState({ pokemonsLinks });
+      });
+  }
+
+  getPokemonInfo(url) {
+    axios.get(url).then((response) => {
+      console.log("getting Pokes:");
+      let pokemon = response.data;
+      this.setState({ pokemonsInfo: [...this.state.pokemonsInfo, pokemon] });
+      this.setState({ isLoading: false });
     });
-  };
+  }
+
+  componentDidMount() {
+    this.getPokemons();
+  }
 
   render() {
     return (
@@ -29,10 +56,13 @@ class App extends Component {
                 <this.Home {...this.state} />
               </Route>
               <Route path="/pokemons">
-                <Pokemons />
+                <Pokemons data={this.state} />
               </Route>
               <Route path="/types">
                 <Type />
+              </Route>
+              <Route path="/pokemon">
+                <DetailPage />
               </Route>
             </Switch>
           </div>

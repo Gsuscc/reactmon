@@ -49,6 +49,9 @@ export default class Pokemons extends Component {
             </Link>
           </div>
         ))}
+        <Link to={`/`}>
+          <button>Back</button>
+        </Link>
       </div>
     );
   }

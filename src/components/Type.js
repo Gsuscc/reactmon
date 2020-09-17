@@ -75,6 +75,9 @@ export default class Type extends Component {
             </Router>
           </div>
         ))}
+        <Link to={"/"}>
+          <button>Back</button>
+        </Link>
       </div>
     );
   }

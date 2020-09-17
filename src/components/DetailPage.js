@@ -22,6 +22,17 @@ class DetailPage extends Component {
     return pokemonTypes;
   }
 
+  getPokemonAbilities(pokemon) {
+    let pokemonAbilities = "";
+    for (let index = 0; index < pokemon.abilities.length; index++) {
+      pokemonAbilities +=
+        pokemon.abilities.length - 1 > index
+          ? pokemon.abilities[index].ability.name + ", "
+          : pokemon.abilities[index].ability.name;
+    }
+    return pokemonAbilities;
+  }
+
   goBack() {
     this.props.history.goBack();
   }
@@ -37,6 +48,7 @@ class DetailPage extends Component {
               <th>Height</th>
               <th>Weight</th>
               <th>Types</th>
+              <th>Abilities</th>
             </tr>
           </thead>
           <tbody>
@@ -45,6 +57,7 @@ class DetailPage extends Component {
               <td>{pokemon.height}</td>
               <td>{pokemon.weight}</td>
               <td>{this.getPokemonTypes(pokemon)}</td>
+              <td>{this.getPokemonAbilities(pokemon)}</td>
             </tr>
           </tbody>
         </table>

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../index.css";
-import DetailPage from "./DetailPage";
 
 export default class Pokemons extends Component {
   constructor(props) {
@@ -49,7 +48,7 @@ export default class Pokemons extends Component {
             </Link>
           </div>
         ))}
-        <Link to={`/`}>
+        <Link to={"/"}>
           <button>Back</button>
         </Link>
       </div>

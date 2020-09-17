@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Pokemons from "./components/Pokemons";
@@ -6,72 +6,38 @@ import Type from "./components/Type";
 import DetailPage from "./components/DetailPage";
 import axios from "axios";
 
-class App extends Component {
-  state = {
-    navbarLinks: [
-      { id: 1, link: "/pokemons", buttonName: "Pokecodex" },
-      { id: 2, link: "/types", buttonName: "Types" },
-    ],
-    isLoading: true,
-    pokemonsLinks: [],
-    pokemonsInfo: [],
-  };
+const App = (props) => {
+  const [navbarLinks, setNavbarLinks] = useState([
+    { id: 1, link: "/pokemons", buttonName: "Pokecodex" },
+    { id: 2, link: "/types", buttonName: "Types" },
+  ]);
 
-  getPokemons() {
+  const [isLoading, setIsloading] = useState(true);
+
+  const [pokemonsLinks, setPokemonsLinks] = useState([]);
+
+  const [pokemonsInfo, setPokemonsInfo] = useState([]);
+
+  useEffect(() => {
     axios
       .get("https://pokeapi.co/api/v2/pokemon")
       .then((response) => {
         response.data.results.forEach((pokemon) => {
-          this.getPokemonInfo(pokemon.url);
+          axios.get(pokemon.url).then((response) => {
+            let pokemon = response.data;
+            setPokemonsInfo((pokemonsInfo) => [...pokemonsInfo, pokemon]);
+            setIsloading(false);
+          });
         });
         return response;
       })
       .then((response) => {
         const pokemonsLinks = response.data.results;
-        this.setState({ pokemonsLinks });
+        setPokemonsLinks(pokemonsLinks);
       });
-  }
+  }, []);
 
-  getPokemonInfo(url) {
-    axios.get(url).then((response) => {
-      let pokemon = response.data;
-      this.setState({ pokemonsInfo: [...this.state.pokemonsInfo, pokemon] });
-      this.setState({ isLoading: false });
-    });
-  }
-
-  componentDidMount() {
-    this.getPokemons();
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <Router>
-          <div>
-            <Switch>
-              <Route exact path="/">
-                <this.Home {...this.state} />
-              </Route>
-              <Route path="/pokemons">
-                <Pokemons data={this.state} />
-              </Route>
-              <Route path="/types">
-                <Type />
-              </Route>
-              <Route
-                path="/pokemon"
-                render={(props) => <DetailPage {...props} data={this.state} />}
-              ></Route>
-            </Switch>
-          </div>
-        </Router>
-        {/* {pokemons} */}
-      </div>
-    );
-  }
-
-  Home(props) {
+  const Home = (props) => {
     return (
       <div>
         {props.navbarLinks.map((link) => {
@@ -86,7 +52,36 @@ class App extends Component {
         })}
       </div>
     );
-  }
-}
+  };
+
+  let content = (
+    <div className="App">
+      <Router>
+        <div>
+          <Switch>
+            <Route exact path="/">
+              <Home navbarLinks={navbarLinks} />
+            </Route>
+            <Route path="/pokemons">
+              <Pokemons
+                pokemonsLinks={pokemonsLinks}
+                pokemonsInfo={pokemonsInfo}
+              />
+            </Route>
+            <Route path="/types">
+              <Type />
+            </Route>
+            <Route
+              path="/pokemon"
+              render={(props) => <DetailPage {...props} data={pokemonsInfo} />}
+            ></Route>
+          </Switch>
+        </div>
+      </Router>
+      {/* {pokemons} */}
+    </div>
+  );
+  return content;
+};
 
 export default App;

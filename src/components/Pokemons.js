@@ -1,57 +1,45 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "../index.css";
 
-export default class Pokemons extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      pokemonsLinks: [],
-      pokemonsInfo: [],
-    };
-  }
-
-  getSpriteByName(name) {
-    for (let pokemon of this.props.data.pokemonsInfo) {
+const Pokemons = (props) => {
+  const getSpriteByName = (name) => {
+    for (let pokemon of props.pokemonsInfo) {
       if (pokemon.name === name) return pokemon.sprites.front_default;
     }
-  }
+  };
 
-  getIdByName(name) {
-    for (let pokemon of this.props.data.pokemonsInfo) {
+  const getIdByName = (name) => {
+    for (let pokemon of props.pokemonsInfo) {
       if (pokemon.name === name) return pokemon.id;
     }
-  }
+  };
 
-  render() {
-    const { isLoading, pokemonsLinks, pokemonsInfo } = this.props.data;
+  console.log();
+  // const { pokemonsLinks } = props;
 
-    if (isLoading) {
-      return <div className="Pokemons">Loading...</div>;
-    }
-
-    return (
-      <div className="container">
-        {pokemonsLinks.map((pokemon) => (
-          <div className="Pokemons">
-            <p className="name">{pokemon.name}</p>
-            <div>
-              <img
-                className="pokeImg"
-                src={this.getSpriteByName(pokemon.name)}
-                alt="img"
-              ></img>
-            </div>
-            <Link to={`/pokemon/${this.getIdByName(pokemon.name)}`}>
-              <button>Details</button>
-            </Link>
+  return (
+    <div className="container">
+      {props.pokemonsLinks.map((pokemon) => (
+        <div className="Pokemons">
+          <p className="name">{pokemon.name}</p>
+          <div>
+            <img
+              className="pokeImg"
+              src={getSpriteByName(pokemon.name)}
+              alt="img"
+            ></img>
           </div>
-        ))}
-        <Link to={"/"}>
-          <button>Back</button>
-        </Link>
-      </div>
-    );
-  }
-}
+          <Link to={`/pokemon/${getIdByName(pokemon.name)}`}>
+            <button>Details</button>
+          </Link>
+        </div>
+      ))}
+      <Link to={"/"}>
+        <button>Back</button>
+      </Link>
+    </div>
+  );
+};
+
+export default Pokemons;

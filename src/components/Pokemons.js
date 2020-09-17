@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Link } from "react-router-dom";
+import "../index.css";
 
 export default class Pokemons extends Component {
   constructor(props) {
@@ -32,6 +33,13 @@ export default class Pokemons extends Component {
     this.getPokemons();
   }
 
+  getSpriteByName(name) {
+    for (let pokemon of this.state.pokemonsInfo) {
+      console.log(pokemon);
+      if (pokemon.name === name) return pokemon.sprites.front_default;
+    }
+  }
+
   getPokemonInfo(url) {
     axios.get(url).then((response) => {
       console.log("getting Pokes:");
@@ -45,21 +53,24 @@ export default class Pokemons extends Component {
     const { isLoading, pokemonsLinks, pokemonsInfo } = this.state;
 
     if (isLoading) {
-      console.log(this.state);
       return <div className="Pokemons">Loading...</div>;
     }
 
     return (
-      <div>
+      <div className="container">
         {console.log(this.state)}
         {pokemonsLinks.map((pokemon) => (
           <div className="Pokemons">
             <p className="name">{pokemon.name}</p>
-            <img src={pokemonsInfo.sprites.front_default} alt="img"></img>
+            <img
+              className="pokeImg"
+              src={this.getSpriteByName(pokemon.name)}
+              alt="img"
+            ></img>
             <Router>
-              <li>
-                <Link to={pokemon.url}></Link>
-              </li>
+              <Link to={pokemon.url}>
+                <button>Details</button>
+              </Link>
             </Router>
           </div>
         ))}

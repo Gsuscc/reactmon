@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
 import "../index.css";
+import DetailPage from "./DetailPage";
 
 export default class Pokemons extends Component {
   constructor(props) {
@@ -14,7 +15,6 @@ export default class Pokemons extends Component {
 
   getSpriteByName(name) {
     for (let pokemon of this.props.data.pokemonsInfo) {
-      console.log(pokemon);
       if (pokemon.name === name) return pokemon.sprites.front_default;
     }
   }
@@ -44,11 +44,9 @@ export default class Pokemons extends Component {
                 alt="img"
               ></img>
             </div>
-            <Router>
-              <Link to={`/pokemon/${this.getIdByName(pokemon.name)}`}>
-                <button>Details</button>
-              </Link>
-            </Router>
+            <Link to={`/pokemon/${this.getIdByName(pokemon.name)}`}>
+              <button>Details</button>
+            </Link>
           </div>
         ))}
       </div>

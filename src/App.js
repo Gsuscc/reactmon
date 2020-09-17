@@ -27,7 +27,6 @@ class App extends Component {
         return response;
       })
       .then((response) => {
-        console.log("getting Links");
         const pokemonsLinks = response.data.results;
         this.setState({ pokemonsLinks });
       });
@@ -35,7 +34,6 @@ class App extends Component {
 
   getPokemonInfo(url) {
     axios.get(url).then((response) => {
-      console.log("getting Pokes:");
       let pokemon = response.data;
       this.setState({ pokemonsInfo: [...this.state.pokemonsInfo, pokemon] });
       this.setState({ isLoading: false });
@@ -61,9 +59,10 @@ class App extends Component {
               <Route path="/types">
                 <Type />
               </Route>
-              <Route path="/pokemon">
-                <DetailPage />
-              </Route>
+              <Route
+                path="/pokemon"
+                render={(props) => <DetailPage {...props} data={this.state} />}
+              ></Route>
             </Switch>
           </div>
         </Router>

@@ -29,3 +29,8 @@ code {
   margin-bottom: 30px;
   align-self: center;
 }
+
+.navbar {
+  display: flex;
+  justify-content: center;
+}

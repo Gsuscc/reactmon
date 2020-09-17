@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Pokemons from "./components/Pokemons";
+import Type from "./components/Type";
 
 class App extends Component {
   state = {
@@ -30,9 +31,9 @@ class App extends Component {
               <Route path="/pokemons">
                 <Pokemons />
               </Route>
-              {/* <Route path="/dashboard">
-            <Dashboard />
-          </Route> */}
+              <Route path="/types">
+                <Type />
+              </Route>
             </Switch>
           </div>
         </Router>

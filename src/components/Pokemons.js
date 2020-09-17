@@ -62,11 +62,13 @@ export default class Pokemons extends Component {
         {pokemonsLinks.map((pokemon) => (
           <div className="Pokemons">
             <p className="name">{pokemon.name}</p>
-            <img
-              className="pokeImg"
-              src={this.getSpriteByName(pokemon.name)}
-              alt="img"
-            ></img>
+            <div>
+              <img
+                className="pokeImg"
+                src={this.getSpriteByName(pokemon.name)}
+                alt="img"
+              ></img>
+            </div>
             <Router>
               <Link to={pokemon.url}>
                 <button>Details</button>

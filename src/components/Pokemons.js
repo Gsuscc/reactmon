@@ -15,9 +15,6 @@ const Pokemons = (props) => {
     }
   };
 
-  console.log();
-  // const { pokemonsLinks } = props;
-
   return (
     <div className="container">
       {props.pokemonsLinks.map((pokemon) => (

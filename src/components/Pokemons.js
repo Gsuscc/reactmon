@@ -2,46 +2,60 @@ import React, { Component } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 
-class Pokemons extends Component {
+export default class Pokemons extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
-      pokemons: [],
-      img: [],
+      isLoading: true,
+      pokemonsLinks: [],
+      pokemonsInfo: [],
     };
   }
 
   getPokemons() {
-    axios.get("https://pokeapi.co/api/v2/pokemon").then((response) => {
-      const pokemons = response.data.results;
-      this.setState({ pokemons });
-    });
-  }
-  getPokemonImages() {
-    this.state.pokemons.forEach((pokemon) => this.getPokemonInfo(pokemon.url));
+    axios
+      .get("https://pokeapi.co/api/v2/pokemon")
+      .then((response) => {
+        response.data.results.forEach((pokemon) => {
+          this.getPokemonInfo(pokemon.url);
+        });
+        return response;
+      })
+      .then((response) => {
+        console.log("getting Links");
+        const pokemonsLinks = response.data.results;
+        this.setState({ pokemonsLinks });
+      });
   }
 
   componentDidMount() {
     this.getPokemons();
-    this.getPokemonImages();
   }
 
   getPokemonInfo(url) {
     axios.get(url).then((response) => {
-      let name = response.data.name;
-      let imgUrl = response.data.sprites.fornt_default;
-      let imgToAdd = { name: imgUrl };
-      this.setState({ img: [...this.state.img, imgToAdd] });
+      console.log("getting Pokes:");
+      let pokemon = response.data;
+      this.setState({ pokemonsInfo: [...this.state.pokemonsInfo, pokemon] });
+      this.setState({ isLoading: false });
     });
   }
 
   render() {
+    const { isLoading, pokemonsLinks, pokemonsInfo } = this.state;
+
+    if (isLoading) {
+      console.log(this.state);
+      return <div className="Pokemons">Loading...</div>;
+    }
+
     return (
       <div>
-        {this.state.pokemons.map((pokemon) => (
-          <div className="card">
+        {console.log(this.state)}
+        {pokemonsLinks.map((pokemon) => (
+          <div className="Pokemons">
             <p className="name">{pokemon.name}</p>
-            <img src={this.state.img[pokemon.name]} alt="img"></img>
+            <img src={pokemonsInfo.sprites.front_default} alt="img"></img>
             <Router>
               <li>
                 <Link to={pokemon.url}></Link>
@@ -53,5 +67,3 @@ class Pokemons extends Component {
     );
   }
 }
-
-export default Pokemons;

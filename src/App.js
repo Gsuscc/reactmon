@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Pokemons from "./components/Pokemons";
 import Type from "./components/Type";
 import DetailPage from "./components/DetailPage";
-import axios from "axios";
 import "./index.css";
 import styled from "styled-components";
-import { PokemonProvider, PokemonContext } from "./PokemonContext";
+import { PokemonProvider } from "./PokemonContext";
 import Navbar from "./components/Navbar";
 
 const H1 = styled.h1`
@@ -34,31 +33,6 @@ export const Button = styled.button`
 `;
 
 const App = (props) => {
-  const [isLoading, setIsloading] = useState(true);
-
-  const [pokemonsLinks, setPokemonsLinks] = useState([]);
-
-  const [pokemonsInfo, setPokemonsInfo] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("https://pokeapi.co/api/v2/pokemon")
-      .then((response) => {
-        response.data.results.forEach((pokemon) => {
-          axios.get(pokemon.url).then((response) => {
-            let pokemon = response.data;
-            setPokemonsInfo((pokemonsInfo) => [...pokemonsInfo, pokemon]);
-            setIsloading(false);
-          });
-        });
-        return response;
-      })
-      .then((response) => {
-        const pokemonsLinks = response.data.results;
-        setPokemonsLinks(pokemonsLinks);
-      });
-  }, []);
-
   let content = (
     <PokemonProvider>
       <div className="App">
@@ -70,19 +44,14 @@ const App = (props) => {
                 <Navbar />
               </Route>
               <Route path="/pokemons">
-                <Pokemons
-                  pokemonsLinks={pokemonsLinks}
-                  pokemonsInfo={pokemonsInfo}
-                />
+                <Pokemons />
               </Route>
               <Route path="/types">
                 <Type />
               </Route>
               <Route
                 path="/pokemon"
-                render={(props) => (
-                  <DetailPage {...props} data={pokemonsInfo} />
-                )}
+                render={(props) => <DetailPage {...props} />}
               ></Route>
             </Switch>
           </div>

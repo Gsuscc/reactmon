@@ -1,12 +1,16 @@
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "../index.css";
+import { PokemonContext } from "../PokemonContext";
 
 const DetailPage = (props) => {
-  console.log(props);
+  const { navbar, pokeInfo, pokeLinks } = useContext(PokemonContext);
+  const [pokemonsInfo, setPokemonsInfo] = pokeInfo;
+  const [pokemonsLinks, setPokemonsLinks] = pokeLinks;
+
   const getPokemonToShow = () => {
     let id = parseInt(props.location.pathname.split("/").slice(-1)[0]);
-    for (let pokemon of props.data) {
+    for (let pokemon of pokemonsInfo) {
       if (pokemon.id === id) return pokemon;
     }
   };

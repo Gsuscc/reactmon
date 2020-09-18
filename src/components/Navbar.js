@@ -4,7 +4,8 @@ import { Button } from "../App";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const [navbarLinks, setNavbarLinks] = useContext(PokemonContext);
+  const { navbar, pokeInfo, pokeLinks } = useContext(PokemonContext);
+  const [navbarLinks, setNavbarLinks] = navbar;
   return (
     <div className="navbar">
       {navbarLinks.map((link) => {

@@ -8,6 +8,7 @@ import "./index.css";
 import styled from "styled-components";
 import { PokemonProvider } from "./PokemonContext";
 import Navbar from "./components/Navbar";
+import ThemeSwitcher from "react-theme-switcher";
 
 const H1 = styled.h1`
   font-family: monospace;
@@ -37,6 +38,7 @@ const App = (props) => {
     <PokemonProvider>
       <div className="App">
         <H1>Pokemon Library</H1>
+        <ThemeSwitcher />
         <Router>
           <div>
             <Switch>

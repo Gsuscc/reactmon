@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../index.css";
 import { PokemonContext } from "../PokemonContext";
 import { MyPokemons } from "./MyPokemons";
+import ThemeSwitcher from "react-theme-switcher";
 
 const Pokemons = (props) => {
   const {

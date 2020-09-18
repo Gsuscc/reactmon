@@ -2,26 +2,31 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "../index.css";
 import { PokemonContext } from "../PokemonContext";
+import { MyPokemons } from "./MyPokemons";
 
 const Pokemons = (props) => {
-  const { pokemons, links } = useContext(PokemonContext);
+  const {
+    pokemons,
+    links,
+    addPokemonToStore,
+    getSpriteByName,
+    getIdByName,
+  } = useContext(PokemonContext);
   const [pokemonsInfo, setPokemonsInfo] = pokemons;
   const [pokemonsLinks, setPokemonsLinks] = links;
 
-  const getSpriteByName = (name) => {
-    for (let pokemon of pokemonsInfo) {
-      if (pokemon.name === name) return pokemon.sprites.front_default;
-    }
-  };
-
-  const getIdByName = (name) => {
-    for (let pokemon of pokemonsInfo) {
-      if (pokemon.name === name) return pokemon.id;
-    }
+  const catchPokemon = (pokemon) => {
+    addPokemonToStore(pokemon);
   };
 
   return (
     <div className="container">
+      <Link to={`/myPokemons`}>
+        <button>My Pokemons</button>
+      </Link>
+      <Link to={"/"}>
+        <button>Back</button>
+      </Link>
       {pokemonsLinks.map((pokemon) => (
         <div className="Pokemons">
           <p className="name">{pokemon.name}</p>
@@ -35,11 +40,9 @@ const Pokemons = (props) => {
           <Link to={`/pokemon/${getIdByName(pokemon.name)}`}>
             <button>Details</button>
           </Link>
+          <button onClick={catchPokemon.bind(this, pokemon)}>Catch!</button>
         </div>
       ))}
-      <Link to={"/"}>
-        <button>Back</button>
-      </Link>
     </div>
   );
 };

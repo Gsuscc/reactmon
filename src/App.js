@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { PokemonProvider } from "./PokemonContext";
 import Navbar from "./components/Navbar";
 import ThemeSwitcher from "react-theme-switcher";
+import { MyPokemons } from "./components/MyPokemons";
 
 const H1 = styled.h1`
   font-family: monospace;
@@ -55,6 +56,9 @@ const App = (props) => {
                 path="/pokemon"
                 render={(props) => <DetailPage {...props} />}
               ></Route>
+              <Route path="/myPokemons">
+                <MyPokemons />
+              </Route>
             </Switch>
           </div>
         </Router>

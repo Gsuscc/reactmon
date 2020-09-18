@@ -16,6 +16,13 @@ export const PokemonProvider = (props) => {
 
   const [pokemonsInfo, setPokemonsInfo] = useState([]);
 
+  const [pokemonStorage, setPokemonStorage] = useState([]);
+
+  const addPokemonToStore = (pokemon) => {
+    let newStorage = [...pokemonStorage];
+    setPokemonStorage([...newStorage, pokemon]);
+  };
+
   useEffect(() => {
     axios
       .get("https://pokeapi.co/api/v2/type")
@@ -54,6 +61,20 @@ export const PokemonProvider = (props) => {
       });
   }, []);
 
+  const getSpriteByName = (name) => {
+    for (let pokemon of pokemonsInfo) {
+      if (pokemon.name === name) return pokemon.sprites.front_default;
+    }
+  };
+
+  const getIdByName = (name) => {
+    for (let pokemon of pokemonsInfo) {
+      if (pokemon.name === name) return pokemon.id;
+    }
+  };
+
+  console.log(pokemonStorage);
+
   return (
     <PokemonContext.Provider
       value={{
@@ -62,6 +83,10 @@ export const PokemonProvider = (props) => {
         links: [pokemonsLinks, setPokemonsLinks],
         types: [typeInfos, setTypeInfos],
         linksForTypes: [typeLinks, setTypeLinks],
+        addPokemonToStore: addPokemonToStore,
+        store: [pokemonStorage, setPokemonStorage],
+        getSpriteByName: getSpriteByName,
+        getIdByName: getIdByName,
       }}
     >
       {props.children}

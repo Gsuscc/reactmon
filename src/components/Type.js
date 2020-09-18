@@ -1,48 +1,16 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useContext } from "react";
+import { PokemonContext } from "../PokemonContext";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import "../index.css";
 
 const Type = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [typeLinks, setTypeLinks] = useState([]);
-  const [typeInfos, setTypeInfos] = useState([]);
+  const { types, linksForTypes } = useContext(PokemonContext);
+  const [typeInfos, setTypeInfos] = types;
+  const [typeLinks, setTypeLinks] = linksForTypes;
 
-  useEffect(() => {
-    axios
-      .get("https://pokeapi.co/api/v2/type")
-      .then((response) => {
-        response.data.results.forEach((type) => {
-          axios.get(type.url).then((response) => {
-            let type = response.data;
-            setTypeInfos((typeInfos) => [...typeInfos, type]);
-            setIsLoading(false);
-          });
-        });
-        return response;
-      })
-      .then((response) => {
-        const typeLinks = response.data.results;
-        setTypeLinks(typeLinks);
-      });
-  }, []);
-
-  // const getTypeInfo = (url) => {
-  //   axios.get(url).then((response) => {
-  //     let type = response.data;
-  //     setTypeInfos({ typeInfos: [...typeInfos, type] });
-  //     setIsLoading({ isLoading: false });
-  //   });
-  // };
-
-  if (isLoading) {
-    console.log(typeInfos);
-    console.log(typeLinks);
-    return <div className="Types">Loading...</div>;
-  }
-
-  console.log(typeInfos);
-  console.log(typeLinks);
+  // if (isLoading) {
+  //   return <div className="Types">Loading...</div>;
+  // }
 
   return (
     <div className="container">

@@ -4,9 +4,9 @@ import "../index.css";
 import { PokemonContext } from "../PokemonContext";
 
 const DetailPage = (props) => {
-  const { navbar, pokeInfo, pokeLinks } = useContext(PokemonContext);
-  const [pokemonsInfo, setPokemonsInfo] = pokeInfo;
-  const [pokemonsLinks, setPokemonsLinks] = pokeLinks;
+  const { pokemons, links } = useContext(PokemonContext);
+  const [pokemonsInfo, setPokemonsInfo] = pokemons;
+  const [pokemonsLinks, setPokemonsLinks] = links;
 
   const getPokemonToShow = () => {
     let id = parseInt(props.location.pathname.split("/").slice(-1)[0]);

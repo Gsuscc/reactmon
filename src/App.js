@@ -8,6 +8,7 @@ import axios from "axios";
 import "./index.css";
 import styled from "styled-components";
 import { PokemonProvider, PokemonContext } from "./PokemonContext";
+import Navbar from "./components/Navbar";
 
 const H1 = styled.h1`
   font-family: monospace;
@@ -19,7 +20,7 @@ const H1 = styled.h1`
   box-shadow: 21px;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   background-color: orangered;
   text-decoration: none;
   line-height: 30px;
@@ -58,20 +59,6 @@ const App = (props) => {
       });
   }, []);
 
-  const Home = () => {
-    const [navbarLinks, setNavbarLinks] = useContext(PokemonContext);
-    return (
-      <div className="navbar">
-        {navbarLinks.map((link) => {
-          return (
-            <Link to={link.link}>
-              <Button className="btn">{link.buttonName}</Button>
-            </Link>
-          );
-        })}
-      </div>
-    );
-  };
   let content = (
     <PokemonProvider>
       <div className="App">
@@ -80,7 +67,7 @@ const App = (props) => {
           <div>
             <Switch>
               <Route exact path="/">
-                <Home />
+                <Navbar />
               </Route>
               <Route path="/pokemons">
                 <Pokemons
